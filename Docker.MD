@@ -12,25 +12,32 @@
     阿里云
 ```
 
+### 基本命令
+> docker version  __版本信息__
+*** 
+> docker info  __docker 系统信息__
+***
+### 镜像命令
+> docker images __所有镜像__  
+> > -a 所有
+> > -q 只显示镜像id
+***
+> docker search __搜索镜像__
+> > --filter  __docker search mysql --filter=STARS=3000__  
+> > --limit  
+***
+> docker pull __下载镜像__
+> > docker pull mysql:5.7  
+***
+> docker rmi __删除镜像__
+> > docker rmi -f 镜像id 镜像id2 镜像id3
+> > docker rmi -f $(docker images -aq)
+***
+###容器命令
+> docker run 
+> > docker rum -name='名字' __指定容器名字__  
+> > docker rum -d __后台方式运行__  
+> > docker rum -it __交互方式运行__  
+> > docker rum -p 主机端口:容器端口 __交互方式运行__  
 
-###docker 命令
-
-|  表头   | 表头  |
-| : ---- | :---- : |
-| docker version  | docker 版本信息 |
-| docker info  | docker 系统信息,包括镜像和容器的数量 |
-| docker images  | 查看镜像  |
-| docker search xx  | 搜索 --filter=STARS=5000 过滤条件等   |
-| docker pull  xx   | 下载 可以指定版本 pull xx:5.7 |
-| docker rmi   | 删除镜像  空格分割可以多个 |
-| docker rmi -f ${docker images -qa}  | 删除所有镜像  |
-| docker run image | 启动容器  --name="xx" 容器名称 -d 后台运行 -it 交互运行 -P 指定端口 -P 8080:8888 -p 随机端口|
-| docker ps | 查看现在运行的容器  -a 之前运行的容器（all） -n=? 最近创建的容器|
-| docker start 容器id| 启动|
-| docker restart 容器id|重启|
-| docker stop 容器id|停止|
-| docker kill 容器id|杀死|
-| docker ||
-| docker ||
-| docker ||
-
+> docker ps __列出当前正在运行的容器__
