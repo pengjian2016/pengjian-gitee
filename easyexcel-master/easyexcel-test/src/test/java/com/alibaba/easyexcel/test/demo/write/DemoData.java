@@ -1,13 +1,12 @@
 package com.alibaba.easyexcel.test.demo.write;
 
-import java.util.Date;
-
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
 
 /**
  * 基础数据类

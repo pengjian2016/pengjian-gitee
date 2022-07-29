@@ -5,6 +5,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>java</module>
+        <module>java_pdf</module>
     </modules>
 
     <parent>
