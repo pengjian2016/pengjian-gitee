@@ -6,6 +6,7 @@
     <modules>
         <module>java</module>
         <module>java_pdf</module>
+        <module>java_pdf7</module>
     </modules>
 
     <parent>
