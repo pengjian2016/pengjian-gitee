@@ -5,45 +5,36 @@ import java.util.Arrays;
 /**
  * @author pengjian
  * @since 2022-05-05
+ * 比较相邻的元素， 对每一对相邻元素做同样的工作，从开始第一对到结尾的最后一对。在这一点，最后的元素应该会是最大的数。
+ * 针对所有的元素重复以上的步骤，除了最后一个。
+ * 持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。
  */
 public class 冒泡排序 {
-    public static void main(String[] args){
-        int[] nums1 = {1, 2, 7, 9, 5, 8,0,3};
-        bubbleSort(nums1);
-        System.out.println(Arrays.toString(nums1));
+
+    public static void main(String[] args) {
+        //int[] arr = new int[10];
+        //for (int i = 0; i < 10; i++) {
+        //    arr[i] = (int) Math.round(Math.random() * 10 + 1);
+        //}
+        int[] arr = new int[]{3,7,8,9,6,4,1,9,5,23,99};
+        Arrays.stream(arr).forEach(System.out::print);
+        System.out.println("");
+        bobbleSort(arr);
     }
 
-    private static void bubbleSort(int[] nums) {
-        boolean hasChange = true;
-        int size = nums.length;
-        for (int i = 0 ; i < size - 1 && hasChange; ++i) {
-            hasChange = false;
-            for (int j = 0; j < size - i - 1; ++j) {
-                if (nums[j] > nums[j + 1]) {
-                    swap(nums, j, j + 1);
-                    hasChange = true;
+    public static void bobbleSort(int arr[]) {
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr.length - 1 - i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
                 }
             }
+            System.out.println("");
+            Arrays.stream(arr).forEach(System.out::print);
         }
     }
-
-    private static void bubbleSort2(int[] nums) {
-        for (int i = 0; i < nums.length; i++) {
-            for (int j = i+1; j <nums.length ; j++) {
-                System.out.println(i+"--"+j);
-                if (nums[i] > nums[j]) {
-                    swap(nums, i, j);
-                }
-            }
-        }
-    }
-
-    private static void swap(int[] nums, int i, int j) {
-        int t = nums[i];
-        nums[i] = nums[j];
-        nums[j] = t;
-    }
-
 
 
 }
