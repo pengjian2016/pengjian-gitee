@@ -1,162 +1,182 @@
 package com.example.pengjian.jdk8;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.junit.Test;
 
-import com.example.pengjian.jdk8.pojo.Person;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
+ * TODO
+ *
  * @author pengjian
- * @since 2022-03-07
+ * @since 2022-09-30
  */
 public class StreamDemo {
-    //获取String集合中最长的元素 最短
+
+    public static List<Student> list = Arrays.asList(new Student("九天", "男", 5000, 18, "天秤座"),
+            new Student("十夜", "男", 4000, 16, "双鱼座"),
+            new Student("十一郎", "男", 3000, 24, "水瓶座")
+    );
+
     @Test
-    public void maxTest() {
-        List<String> stringList = Arrays.asList("ssx", "mike", "algorithm", "handsome", "hzBank");
-        stringList.stream().max(Comparator.comparing(String::length)).ifPresent(System.out::println);
-        stringList.stream().max(Comparator.comparing(String::length).reversed()).ifPresent(System.out::println);
+    public void test0() {
+        list.stream();
     }
 
-    //获取Integer集合中最大值
+    //forEach 遍历
     @Test
-    public void maxTest2() {
-        List<Integer> integers = Arrays.asList(1, 50, 20, 15, 35);
-        //自然排序
-        integers.stream().max(Integer::compareTo).ifPresent(System.out::println);
-
-        //自定义排序
-        integers.stream().max(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return o1-o2;
-            }
-        }).ifPresent(System.out::println);
-
-        integers.stream().max((o1,o2)->o2-o1).ifPresent(System.out::println);
-
+    public void test1() {
+        list.forEach(System.out::println);
     }
 
-    //做高工资的人
+    //filter 过滤
     @Test
-    public void maxSalary() {
-        ArrayList<Person> personList = new ArrayList<>();
-        personList.add(new Person("Tom", 8900, 23, "male", "New York"));
-        personList.add(new Person("Jack", 7000, 25, "male", "Washington"));
-        personList.add(new Person("Lily", 7800, 21, "female", "Washington"));
-        personList.add(new Person("Anni", 8200, 24, "female", "New York"));
-        personList.add(new Person("Owen", 9500, 25, "male", "New York"));
-        personList.add(new Person("Alisa", 7900, 26, "female", "New York"));
-
-        personList.stream().max(Comparator.comparing(Person::getSalary))
-                .ifPresent(person -> System.out.println(person.getName()+"--"+person.getSalary()));
-
+    public void test2() {
+        list.stream().filter((e) -> e.getStar().equals("天秤座")).forEach(System.out::println);
     }
 
-    //计算Integer集合中大于 6 的元素的个数。
+    //map 转换集合
     @Test
-    public void countTest() {
-        List<Integer> integers = Arrays.asList(1, 2, 15, 62, 32, 5);
-        System.out.println(integers.stream().filter(x -> x > 6).count());
-        integers.stream().filter(x -> x > 6).forEach(System.out::println);
+    public void test3() {
+        List<String> names = list.stream().map(Student::getName).collect(Collectors.toList());
+        names.stream().forEach(System.out::println);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("key1","1");
+        map.put("key2","1");
+        map.put("key3","1");
+        map.put("key4","1");
+        List<String> cidList = map.keySet().stream().map(String::toString).collect(Collectors.toList());
+        System.out.println(cidList);
     }
 
+    //mapToInt 转换数值流  mapToLong、mapToDouble，取最大值
     @Test
-    public void collectTest() {
-        List<Integer> list = Arrays.asList(1, 1, 5, 6, 6, 15, 8, 8);
-        List<Integer> collect = list.stream().filter(x -> x % 2 == 0).collect(Collectors.toList());
-        System.out.println(collect);
-        Set<Integer> collect1 = list.stream().filter(x -> x % 2 == 0).collect(Collectors.toSet());
-        System.out.println(collect1);
-
-    }
-
-    @Test
-    public void collectTest2() {
-        ArrayList<Person> personList = new ArrayList<>();
-        personList.add(Person.builder().name("A").salary(7000).build());
-        personList.add(Person.builder().name("B").salary(8000).build());
-        personList.add(Person.builder().name("C").salary(9000).build());
-
-        Map<String, Person> collect = personList.stream().filter(person -> person.getSalary() > 7000).collect(Collectors.toMap(Person::getName, Function.identity()));
-        System.out.println(collect);
-
-        Map<String, Integer> collect1 = personList.stream().filter(person -> person.getSalary() > 7000).collect(Collectors.toMap(Person::getName, Person::getSalary));
-        System.out.println(collect1);
-
-        personList.add(Person.builder().name("C").salary(10000).build());
-        Map<String, Integer> collect2 = personList.stream().collect(Collectors.toMap(Person::getName, Person::getSalary, (oldVal, currVal)->currVal));
-        System.out.println(collect2);
-
-
-        Map<String, List<Person>> collect3 = personList.stream().collect(Collectors.groupingBy(Person::getName));
-        System.out.println(collect3);
-    }
-
-    //英文字符串数组的元素全部改为大写。整数数组每个元素+3。
-    @Test
-    public void  mapTest() {
-        List<String> stringList = Arrays.asList("abcd", "bcdd", "defde", "fTr");
-        stringList.stream().map(String::toUpperCase).forEach(System.out::println);
-
-    }
-
-    //将员工的薪资全部增加 1000。
-    @Test
-    public void mapTest2(){
-        ArrayList<Person> personList = new ArrayList<>();
-        personList.add(new Person("Tom", 8900, 23, "male", "New York"));
-        personList.add(new Person("Jack", 7000, 25, "male", "Washington"));
-        personList.add(new Person("Lily", 7800, 21, "female", "Washington"));
-        personList.add(new Person("Anni", 8200, 24, "female", "New York"));
-        personList.add(new Person("Owen", 9500, 25, "male", "New York"));
-        personList.add(new Person("Alisa", 7900, 26, "female", "New York"));
-
-        //不改变原集合
-        List<Person> newCollect = personList.stream().map(person -> Person.builder().name(person.getName())
-                .salary(person.getSalary() + 1000)
-                .age(person.getAge())
-                .sex(person.getSex())
-                .area(person.getArea()).build()
-        ).collect(Collectors.toList());
-        System.out.println("---------");
-        newCollect.stream().forEach(System.out::println);
-        System.out.println("---------");
-        personList.stream().forEach(System.out::println);
-
-        //改变原集合
-        List<Person> personList2 = personList.stream().map(person -> {
-            person.setSalary(person.getSalary() + 1000);
-            return person;
-        }).collect(Collectors.toList());
-        System.out.println("---------");
-        personList2.stream().forEach(System.out::println);
-    }
-
-    //求Integer集合的元素之和、乘积和最大值。
-    @Test
-    public void reduceTest(){
-        List<Integer> list = Arrays.asList(1, 3, 2, 8, 11, 4);
-        //求和法1
-        Optional<Integer> sum1 = list.stream().reduce((x, y) -> x + y);
-        //求和法2
-        Optional<Integer> sum2 = list.stream().reduce(Integer::sum);
-
-        //求乘积
-        Optional<Integer> product = list.stream().reduce((x, y) -> x * y);
-
-        //求最大值
-        Optional<Integer> max = list.stream().reduce((x, y) -> x > y ? x : y);
-
-        Optional<Integer> max2 = list.stream().max(Comparator.naturalOrder());
-
-        System.out.println(sum1.get());
-        System.out.println(sum2.get());
-        System.out.println(product.get());
+    public void test4() {
+        IntStream intStream = list.stream().mapToInt(Student::getAge);
+        Stream<Integer> integerStream = intStream.boxed();
+        Optional<Integer> max   = integerStream.max(Integer::compareTo);
         System.out.println(max.get());
-        System.out.println(max2.get());
+
+        Integer integer = list.stream().mapToInt(Student::getAge).boxed().max(Comparator.comparing(Integer::byteValue)).get();
+        System.out.println(integer);
     }
 
+    //flatMap 合并成一个流
+    @Test
+    public void test5() {
+        List<String> list2 = new ArrayList<>();
+        list2.add("aaa bbb ccc");
+        list2.add("ddd eee fff");
+        list2.add("ggg hhh iii");
+        list2 = list2.stream().map(s -> s.split(" ")).flatMap(Arrays::stream).collect(Collectors.toList());
+        System.out.println(list2);
+    }
+
+    //distinct 去重
+    @Test
+    public void test6() {
+        List<String> list2 = new ArrayList<>();
+        list2.add("aaa bbb ccc");
+        list2.add("ddd eee fff");
+        list2.add("ggg hhh iii");
+        list2.add("ggg hhh iii");
+        list2.stream().distinct().forEach(System.out::println);
+        //复杂去重，根据字段
+        //List<RedPacketRecord> newList = records.stream()
+        //        .collect(Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(RedPacketRecord::getRoomId))), ArrayList::new));
+    }
+
+    //sorted 排序
+    @Test
+    public void test7() {
+        //asc排序
+        list.stream().sorted(Comparator.comparingInt(Student::getAge)).forEach(System.out::println);
+        System.out.println("------------------------------------------------------------------");
+        //desc排序
+        list.stream().sorted(Comparator.comparingInt(Student::getAge).reversed()).forEach(System.out::println);
+    }
+
+    //skip 跳过前 n 个
+    @Test
+    public void test8() {
+        list.stream().skip(1).forEach(System.out::println);
+    }
+
+    //limit 截取前 n 个
+    @Test
+    public void test10() {
+        list.stream().limit(1).forEach(System.out::println);
+    }
+
+
+    //anyMatch  只要有其中任意一个符合条件
+    @Test
+    public void test11() {
+        boolean isHave = list.stream().anyMatch(student -> student.getAge() == 16);
+        System.out.println(isHave);
+    }
+
+    //allMatch 全部符合
+    @Test
+    public void test12() {
+        boolean isHave = list.stream().allMatch(student -> student.getAge() == 16);
+        System.out.println(isHave);
+    }
+
+    //、noneMatch 是否满足没有符合的
+    @Test
+    public void test13() {
+        boolean isHave = list.stream().noneMatch(student -> student.getAge() == 16);
+        System.out.println(isHave);
+    }
+
+    //findAny
+    //找到其中一个元素 （使用 stream () 时找到的是第一个元素；使用 parallelStream () 并行时找到的是其中一个元素）
+    @Test
+    public void test14() {
+        Optional<Student> student = list.stream().findAny();
+        System.out.println(student.get());
+    }
+
+    //findFirst 找到第一个元素
+    @Test
+    public void test15() {
+        Optional<Student> student = list.stream().findFirst();
+        System.out.println(student.get());
+    }
+
+    //iterate
+    @Test
+    public void test20() {
+        List<String> list = Arrays.asList("a", "b", "c", "c", "d", "f", "a");
+        Stream.iterate(0, i -> i + 1).limit(list.size()).forEach(i -> {
+            System.out.println(String.valueOf(i) + list.get(i));
+        });
+    }
+    //collect：averagingLong 求平均值
+    @Test
+    public void test21(){
+        // 求年龄平均值
+        Double average = list.stream().collect(Collectors.averagingLong(Student::getAge));
+        System.out.println(average);
+    }
+
+    //collect：collectingAndThen 两步结束，先如何，在如何
+    @Test
+    public void test22(){
+        // 求年龄平均值
+        String average = list.stream().collect(Collectors.collectingAndThen(Collectors.averagingInt(Student::getAge), a->"哈哈，平均年龄"+a));
+        System.out.println(average);
+    }
+
+    //collect：counting 求个数
+    @Test
+    public void test23(){
+        // 求数量
+        Long num = list.stream().collect(Collectors.counting());
+        System.out.println(num);
+    }
 }
