@@ -12,3 +12,6 @@
 ## git rebase -i HEAD~4  将当前上一4步 提出 手动触发（顺序，是否检出）的合并
 ## git branse -f 分支1 分支2 将分支1，分支2 合同当前
 ##
+
+git testv1 提交
+
