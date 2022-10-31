@@ -13,5 +13,5 @@
 ## git branse -f 分支1 分支2 将分支1，分支2 合同当前
 ##
 
-git testv1 提交
+git test 
 
