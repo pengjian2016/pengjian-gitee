@@ -11,7 +11,7 @@
     <groupId>com.example</groupId>
     <artifactId>springboot-mybatis-mulidata</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springboot-mybatis-mulidata</name>
+    <name>springboot-mybatis-mulidata</name>c
     <description>springboot-mybatis-mulidata</description>
     <properties>
         <java.version>11</java.version>
