@@ -21,12 +21,45 @@
     sudo systemctl restart docker
 ```
 ### 安装docker
-    启动 sudo systemctl start docker
-开始->docker在本机找该镜像
-有-已改镜像为模板生成容器实例运行
-无-去dockerhub上找镜像
-    找到 下载镜像到本地-运行
-    没找到返回失败错误
+官方一键安装
+> curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun                
+国内 daocloud一键安装命令        
+> curl -sSL https://get.daocloud.io/docker | sh
+手动安装：卸载、设置仓库、安装
++ yum remove  docker \
+  docker-client \
+  docker-client-latest \
+  docker-common \
+  docker-latest \
+  docker-latest-logrotate \
+  docker-logrotate \
+  docker-selinux \
+  docker-engine-selinux \
+  docker-engine \
+  docker-ce
+仓库
++ $ sudo yum install -y yum-utils \
+  device-mapper-persistent-data \
+  lvm2
+  $ sudo yum-config-manager \
+  --add-repo \
+  https://download.docker.com/linux/centos/docker-ce.repo
+安装
++ sudo yum install -y docker-ce docker-ce-cli containerd.io
++ yum install -y docker-ce
+测试
+docker run hello-word
+  若结果显示“docker: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?”,则运行如下命令：
+systemctl daemon-reload
+systemctl restart docker.service
+再次验证
+docker run hello-world
+
+开机启动
+systemctl enable docker
+
+
+
 
 
 ### 基本命令
