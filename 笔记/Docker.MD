@@ -1,3 +1,18 @@
+##centos 防火墙
+查看开放端口
+firewall-cmd --list-ports
+
+开启端口
+firewall-cmd --zone=public --add-port=8080/tcp --permanent
+  –zone  #作用域
+  –add-port=80/tcp  #添加端口，格式为：端口/通讯协议
+  –permanent  #永久生效，没有此参数重启后失效
+重启防火墙
+firewall-cmd --reload
+停止
+systemctl stop firewall.service
+禁止启动
+systemctl disable firewall.service
 
 ###docker 开源 GO语言开发
 ```
@@ -58,6 +73,11 @@ docker run hello-world
 开机启动
 systemctl enable docker
 
+重启服务
+/etc/docker/daemon.json
+{"registry-mirrors": ["https://registry.cn-hangzhou.aliyuncs.com"]}
+systemctl daemon-reload
+systemctl restart docker
 
 
 
@@ -120,6 +140,10 @@ systemctl enable docker
 ### 从容器拷贝文件到主机
 > docker cp 容器id：容器内路径  目的地主机路径
 >> docker cp 7af535f807e0:/home/test.java /myhome
+> 
+###制作自己的容器
+docker commit  <container的ID> <新的image_name>
+> 
 > 
 ###docker安装nginx
 + docker images #查看本地
@@ -218,5 +242,16 @@ CMD echo "--end--"
 CMD /bin/bash
 
 >> docker build -f mydockerfile-centos -t mycentos:0.1
+
+##docker网络
+清空测试数据
+清空正在运行的容器
+docker kill $(docker ps -aq) 
+删除已停止的容器
+docker rm -f $(docker ps -aq)
+删除所有镜像
+docker rmi -f $(docker ps -aq)
+
+
 
 

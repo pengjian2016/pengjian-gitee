@@ -28,5 +28,13 @@ public class HelloController {
         return new String(bytes);
     }
 
+    @RequestMapping("translate")
+    public Object host2() {
+        String host = "E:\\GoogleHost\\hosts\\translate-hosts";
+        File file = new File(host);
+        byte[] bytes = FileUtil.readBytes(file);
+        return new String(bytes);
+    }
+
 
 }
