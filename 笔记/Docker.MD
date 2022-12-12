@@ -1,150 +1,150 @@
+## 查看内核
+```shell
+[root@centos ~]# cat /etc/redhat-release 
+CentOS Linux release 7.9.2009 (Core)
+[root@centos ~]# uname -r
+3.10.0-1160.el7.x86_64
+```
 ##centos 防火墙
-查看开放端口
+```shell
+#查看开发端口
 firewall-cmd --list-ports
-
-开启端口
+#开放端口
 firewall-cmd --zone=public --add-port=8080/tcp --permanent
-  –zone  #作用域
-  –add-port=80/tcp  #添加端口，格式为：端口/通讯协议
-  –permanent  #永久生效，没有此参数重启后失效
-重启防火墙
+#–zone  #作用域
+#–add-port=80/tcp  #添加端口，格式为：端口/通讯协议
+#–permanent  #永久生效，没有此参数重启后失效
+#重启防火墙
 firewall-cmd --reload
-停止
+#停止
 systemctl stop firewall.service
-禁止启动
+#禁止启动
 systemctl disable firewall.service
-
-###docker 开源 GO语言开发
 ```
-+ 虚拟机：虚拟一台或多台电脑，笨重
-+ 容器： 隔离，镜像 轻巧
 
-镜像（image）==模板  
-    tomcat镜像 ==》run==>tomcat01容器提供服务
-容器（container）==通过镜像创建 简易的linux系统
-    启动，停止，删除，基本命令
-仓库（repository）
-    docker hub 国外
-    阿里云配置
-    sudo mkdir -p /etc/docker
-    sudo tee /etc/docker/daemon.json <<- 'EOF'
-    {
-      "registry-mirrors": ["https://pi9dpp60.mirror.aliyuncs.com"]
-    }
-    EOF
-    sudo systemctl daemon-reload
-    sudo systemctl restart docker
+
+##docker 
+###基本组成
++ 镜像 image
+```shell
+只读的模板，镜像可以用来插件docker容器，一个镜像可以创建多个容器  
+docker镜像文件类似于Java的类模板，而docker容器实例类似于java中new出来的实例对象
 ```
-### 安装docker
-官方一键安装
-> curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun                
-国内 daocloud一键安装命令        
-> curl -sSL https://get.daocloud.io/docker | sh
-手动安装：卸载、设置仓库、安装
-+ yum remove  docker \
-  docker-client \
-  docker-client-latest \
-  docker-common \
-  docker-latest \
-  docker-latest-logrotate \
-  docker-logrotate \
-  docker-selinux \
-  docker-engine-selinux \
-  docker-engine \
-  docker-ce
-仓库
-+ $ sudo yum install -y yum-utils \
-  device-mapper-persistent-data \
-  lvm2
-  $ sudo yum-config-manager \
-  --add-repo \
-  https://download.docker.com/linux/centos/docker-ce.repo
-安装
-+ sudo yum install -y docker-ce docker-ce-cli containerd.io
-+ yum install -y docker-ce
-测试
-docker run hello-word
-  若结果显示“docker: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?”,则运行如下命令：
-systemctl daemon-reload
-systemctl restart docker.service
-再次验证
-docker run hello-world
++ 容器 container *简易版linux*
+```shell
+容器是镜像创建的运行实例
+```
++ 仓库 repository 
+> 最大公开库 https://hub.docker.com/search?q=mysql
 
-开机启动
+### 运行流程
+1. 用户使用docker client 与docker daemon(守护进程) 建立通讯，并发送请求给后者
+2. docker daemon(守护进程)主体，提供docker service的功能使其可以接受client的请求
+3. docker engine(引擎)执行内部一系列工作，每一项都以job的形式存在
+4. job的运行过程中，需要镜像时，registry(注册信息)获取信息，管理驱动 graph driver 下载以graph的形式存储
+5. 创建网络通过network driver创建并管理docker容器的网络
+6. exec driver执行用户指令
+
+### 安装与卸载docker
+1.  官方一键安装 https://github.com/docker/docker-install
+```shell
+## docker官网下载安装
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+
+## 使用阿里云的安装
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh --mirror=Aliyun
+
+## 其他方式安装
+yun install -y yum-utils
+。。。。。
+
+```
+2. 设置相关
+```shell
+#开机启动
 systemctl enable docker
 
-重启服务
-/etc/docker/daemon.json
-{"registry-mirrors": ["https://registry.cn-hangzhou.aliyuncs.com"]}
+# 设置阿里仓库
+cat > /etc/docker/daemon.json << EOF
+{
+"registry-mirrors": ["https://b9pmyelo.mirror.aliyuncs.com"]
+}
+EOF
+# 重新加载配置
 systemctl daemon-reload
+## 重启
 systemctl restart docker
+```
 
+### docker常用命令
+#### 帮助命令
+```shell
+#启动
+systemctl start docker
+#停止
+systemctl stop docker
+#重启
+systemctl restart docker
+#查看状态
+systemctl status docker
+#开机自启动
+systemctl enable docker
+#查看信息
+docker info
+```
 
+#### 镜像命令
+```shell
+#列出本机上的镜像
+docker images  -a 所有镜像 -q 只显示镜像id
+docker search XXX 搜索镜像名XXX 
+docker search XXX --limit 5 显示搜索的5个
+docker pull XXX:TAG 下载XXX TAG指定版本
+docker system df 查看所有镜像/容器/数据卷所占的空间
+docker rmi -f 镜像id1 镜像id2  #删除镜像id1 镜像id2
+docker rmi -f $(docker images -aq) #删除所有镜像
+```
 
+#### 容器命令
+```shell
+docker run [options] image [command] [tag]
+>[options] 有些[-] 或者[--]
+--name='容器新名称'
+-d 后台运行容器并返回容器id
+-it 交互模式运行 等待交互  ## docker run -it centos /bin/bash 
+-P 随机端口 
+-p 指定端口 -p 本机端口：容器端口
+#退出容器
+exit 
+ctrl+p+q 
+docker start 容器id或者名称 ##启动已经停止的容器
+docker restart 容器id或者名称 ##重启容器
+docker stop 容器id或者名称 ##停止容器
+docker kill 容器id或者名称 ##强制停止容器
+docker rm 容器id ### 删除容器
+docker rm -f $(docker ps -aq) ##删除所以容器
+docker logs 容器id ###容器日志
+docker inspect 容器id ###容器内部细节
+docker exec -it 容器id /bin/bash 
+##重新进入容器
+docker attach 容器id ## 不会启动新的进程
+docker exec 容器id ##新的进程
+docker cp 容器id：容器路劲 主机路劲 ## 复制容器内文件到主机
+docker export 容器id > 文件名.tar ##导出
+cat 文件名.tar | docker import - 镜像用户/镜像名称：版本号  ##导出
 
-### 基本命令
-> docker version  ```版本信息```    
-> docker info  ```docker 系统信息```    
-> docker 命令 --help
-### 镜像命令
-> docker images ```查看所有本地主机上的镜像```
-> > docker images -a 所有镜像
-> > docker images -q 只显示镜像id
-> 
-> docker search ```搜索镜像```
-> > docker search mysql --filter=STARS=3000   搜素出来的镜像就是STARS大于3000的
-> 
-> docker pull ```下载镜像```
-> > docker pull mysql 下载最新  
-> > docker pull mysql:5.7  指定版本
-> > docker images 查看本地镜像
-> 
-> docker rmi ```删除镜像```
-> > docker rmi -f 镜像id 镜像id2 镜像id3
-> > docker rmi -f $(docker images -aq) 删除所有
-###容器命令
-> docker pull centos 拉取centos
-> docker run xxx 新建容器并启动
-> 参数 
-> --name 容器名称
-> -d 后台运行
-> -it 交互式运行
-> -p 8080:8080
-> > docker rum -it centos /bin/bash 启动并进入容器
-> > exit 从容器中退回主机   
-> 
-> docker ps ```列出所有的运行的容器```
->> docker ps -a 正在运行的容器
->> docker ps -n=2 前2个容器
->> docker ps -q 显示当前容器的编号
+docker commit -m='提交描述信息' -a='作者' 容器id 要创建的目标容器名称：版本 
 
-### 退出器
-> exit 直接退出容器并关闭
-> Ctrl+P+Q 容器不关闭退出
-### 删除容器
-> docker rm -f 容器id     删除指定id
-> docker rm -f $(docker ps -aq) 删除所有
-> docker ps -a -q |xargs docker rm -f
-### 启动停止容器
-> docker start 容器id
-> docker resart 容器id
-> docker stop 容器id
-> docker kill 容器id
-> docker run -d centos 后台启动容器
->### 日志
-> docker logs -tf --tail number 容器id
-> 
-###进入当前运行的容器
-> docker exec -it 容器id /bin/bash
-> docker attach 容器id
-### 从容器拷贝文件到主机
-> docker cp 容器id：容器内路径  目的地主机路径
->> docker cp 7af535f807e0:/home/test.java /myhome
-> 
-###制作自己的容器
-docker commit  <container的ID> <新的image_name>
-> 
-> 
+```
+#### 容器数据卷
+-- privileged=true 
+######将主机目录挂载到容器目录中
+docker run -it --privileged=true -v /主机目录：/容器目录 镜像名
+容器2继承容器1的卷规则
+docker run -it --privileged=true--volumes-from--name u2 ubuntu
+
 ###docker安装nginx
 + docker images #查看本地
 + docker run -d --name nginx01 -p 3344:80 nginx # 后台方式启动启动镜像
@@ -190,12 +190,13 @@ docker run -it -v 主机目录：容器目录
 mysql:5.7
 ###匿名和具名挂载
 docker run -d -P --name nginx01 -v /etc/nginx nginx
-# -P 随机指定端口
-# 如何确定是具名挂载还是匿名挂载，还是指定路径挂载！
+### -P 随机指定端口
+#### 如何确定是具名挂载还是匿名挂载，还是指定路径挂载！
 -v  容器内路径                   # 匿名挂载
 -v  卷名:容器内路径               # 具名挂载
 -v /主机路径:容器内路径            # 指定路径挂载
  
+
 ##DockerFile
 ```
 # 创建一个dockerfile文件， 名字可以随机
