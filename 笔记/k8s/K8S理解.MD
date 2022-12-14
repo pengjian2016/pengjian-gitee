@@ -68,9 +68,18 @@ resource:
      2. exec
      3. tcpsocket
 ### controller 明细
-+ 部署无状态运用
-+ 管理pod和replicaSet
++ 确保预期的pod副本数量 所有node在同一个pod
++ 无状态应用部署 无先后顺序
++ 有状态应用部署 如mysql的主从
 + 部署 滚动升级
+`
+pod 和controller 通过 selector 和 ladel 标签关联
+`
+deployment运用
+1.部署无状态运用
+2.管理pod和replicaset
+3.部署，滚动升级
+
 ### service 明细
 + 服务发现
 + 定义一组pod策略（负载均衡）
