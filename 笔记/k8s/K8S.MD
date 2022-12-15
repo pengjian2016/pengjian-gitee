@@ -95,11 +95,12 @@ kubeadm version #查看
 
 ```
 kubeadm init \
---apiserver-advertise-address=192.168.89.128 \
+--apiserver-advertise-address=192.168.89.129 \
 --image-repository registry.aliyuncs.com/google_containers \
 --kubernetes-version v1.18.0 \
 --service-cidr=10.96.0.0/12 \
 --pod-network-cidr=10.244.0.0/16
+
 ---
 W1208 19:40:15.690203   18649 configset.go:202] WARNING: kubeadm cannot validate component configs for API groups [kubelet.config.k8s.io kubeproxy.config.k8s.io]
 [init] Using Kubernetes version: v1.18.0
