@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vue学习</title>
+    <style>
+      * {
+        margin-top: 20px;
+      }
+      .demo1 {
+        height: auto;
+        background-color: skyblue;
+      }
+      .box1 {
+        padding: 5px;
+        background-color: skyblue;
+      }
+      .box2 {
+        padding: 5px;
+        background-color: orange;
+      }
+      .list {
+        width: 200px;
+        height: 200px;
+        background-color: peru;
+        overflow: auto;
+      }
+      li {
+        height: 100px;
+      }
+    </style>
+    <script src="js/vue.js" type="text/javascript"></script>
+    <!-- <script src="js/vue.min.js" type="text/javascript"></script> -->
+  </head>
+  <body>
+    <div id="root">
+      姓<input type="text" v-model="firstname" /><br /><br />
+      名<input type="text" v-model="lastname" /><br /><br />
+      全名el赋值 <span>{{firstname}}-{{lastname}}</span><br /><br />
+      全名方法赋值 <span>{{fullname()}}</span><br /><br />
+
+      全名vue实现 <span>{{fullnameVue}}</span><br /><br />
+      全名vue实现 <span>{{fullnameVue2}}</span><br /><br />
+    </div>
+  </body>
+  <script type="text/javascript">
+    Vue.config.productionTip = false;
+    new Vue({
+      el: "#root",
+      data: {
+        firstname: "vue",
+        lastname: "2020",
+      },
+      methods: {
+        fullname() {
+          return this.firstname + "-" + this.lastname;
+        },
+      },
+      computed: {
+        fullnameVue: {
+          //get有什么作用？当有人读取fullnameVue时，get就会被调用，且返回值就作为fullName的值
+          //get什么时候调用？1.初次读取fullnameVue时。2.所依赖的数据发生变化时。
+          get() {
+            console.log("get被调用了");
+            // console.log(this) //此处的this是vm
+            return this.firstname + "-" + this.lastname;
+          },
+          //set什么时候调用? 当fullName被修改时。
+          set(value) {
+            console.log("set", value);
+            const arr = value.split("-");
+            this.firstname = arr[0];
+            this.lastname = arr[1];
+          },
+        },
+        fullnameVue2(){
+          console.log(' fullnameVue2 get被调用了')
+					return this.firstname + '-' + this.lastname
+        }
+      },
+    });
+  </script>
+</html>

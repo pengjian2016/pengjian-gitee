@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vue学习</title>
+    <style>
+      * {
+        margin-top: 20px;
+      }
+      .demo1 {
+        height: auto;
+        background-color: skyblue;
+      }
+      .box1 {
+        padding: 5px;
+        background-color: skyblue;
+      }
+      .box2 {
+        padding: 5px;
+        background-color: orange;
+      }
+      .list {
+        width: 200px;
+        height: 200px;
+        background-color: peru;
+        overflow: auto;
+      }
+      li {
+        height: 100px;
+      }
+    </style>
+    <script src="js/vue.js" type="text/javascript"></script>
+    <!-- <script src="js/vue.min.js" type="text/javascript"></script> -->
+  </head>
+  <body>
+    <div id="root">
+      <br>firstName------
+      <input type="text" v-model="firstName" />
+      <br>lastName------
+      <input type="text" v-model="lastName" />
+      <br>fullName------
+      <input type="text" v-model="fullName" />
+      <br> fullNameComputed------
+      <input type="text" v-model="fullNameComputed" />
+    </div>
+  </body>
+  <script type="text/javascript">
+    Vue.config.productionTip = false;
+    // watch
+    new Vue({
+      el: "#root",
+      data: {
+        firstName: "Foo",
+        lastName: "Bar",
+        fullName: "Foo Bar",
+      },
+      watch: {
+        firstName: function (val) {
+          this.fullName = val + " " + this.lastName;
+        },
+        lastName: function (val) {
+          this.fullName = this.firstName + " " + val;
+        },
+      },
+      computed: {
+        fullNameComputed: function () {
+          return this.firstName + " " + this.lastName;
+        },
+      },
+    });
+  </script>
+</html>

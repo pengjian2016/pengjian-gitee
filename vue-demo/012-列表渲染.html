@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>vue学习</title>
+    <script src="js/vue.js" type="text/javascript"></script>
+    <!-- <script src="js/vue.min.js" type="text/javascript"></script> -->
+</head>
+<body>
+<div id="root">
+    <!-- 遍历数组 -->
+    <h2>人员列表（遍历数组）</h2>
+    <ul>
+        <li v-for="(p,index) of persons" :key="index">
+            {{p.name}}-{{p.age}}
+        </li>
+    </ul>
+
+</div>
+</body>
+<script type="text/javascript">
+    Vue.config.productionTip = false;
+    new Vue({
+        el: '#root',
+        data: {
+            persons: [
+                {id: '001', name: '张三', age: 18},
+                {id: '002', name: '李四', age: 19},
+                {id: '003', name: '王五', age: 20}
+            ],
+            car: {
+                name: '奥迪A8',
+                price: '70万',
+                color: '黑色'
+            },
+            str: 'hello'
+        }
+    });
+</script>
+</html>
