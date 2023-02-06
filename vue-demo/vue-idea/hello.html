@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue</title>
+</head>
+<body>
+<div id="root">
+    <input type="text" v-model="num">
+    <button  @click="num++">自增</button><br>
+    <h1>{{name}} vue 2023</h1>
+    <h2>数字 {{num}} </h2>
+
+    <button @click="addclick">点我</button><br>
+    <hr>
+    <span v-text="name"></span><br>
+    <span v-html="name"></span>
+
+    <hr/>
+    <h1>编程语言分类</h1>
+    <input type="checkbox" v-model="lessons" value="Java" />Java <br/>
+    <input type="checkbox" v-model="lessons" value="JavaScript" />JavaScript <br/>
+    <input type="checkbox" v-model="lessons" value="Python" />Python <br/>
+    <h1>
+        您已购买下列课程：{{lessons.join(",")}}
+    </h1>
+
+
+    <hr>
+    <!--v-for-->
+    <ul>
+        <li v-for="(u,index) in users" :key="u.index">
+          {{index}}  {{u.name + "," + u.gender + ","+ u.age }}
+        </li>
+    </ul>
+    <ul>
+        <li v-for="i in 5">
+            {{i}}
+        </li>
+    </ul>
+
+    <hr>
+
+
+<!--    v-on-->
+    <div style="width: 100px;height: 100px;background-color: red" @click="print('div')"> </div>
+    <button @click="print('btn')">点我试试</button>
+<br>
+    <button @click="show=!show">点我切换显示</button>
+    <h1 v-if="show">你好 vue show </h1>
+    <hr>
+
+
+
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+   const app = new Vue({
+        el:"#root",
+        data:{
+            name: "",
+            num:1,
+            lessons: [],
+            users:[
+                {name:'柳岩',gender:'女',age:21},
+                {name:'虎哥',gender:'男',age:30},
+                {name:'范冰冰',gender:'女',age:24},
+                {name:'刘亦菲',gender:'女',age:18},
+                {name:'古力娜扎',gender:'女',age:25}
+            ],
+            show:true
+        },
+       methods:{
+           addclick(){
+               console.log(this);
+               console.log('hello');
+           },
+           print(msg) {
+               console.log(msg)
+           }
+       },
+       created() {
+           this.name = '学习idea开发';
+           this.name = "<font color='#8a2be2'>虎哥<font>";
+       }
+   })
+
+</script>
+
+</body>
+</html>

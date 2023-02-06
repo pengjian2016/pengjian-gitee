@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vie</title>
+</head>
+<body>
+<div id="root">
+    全局组件
+    <counter1></counter1>
+    <counter1></counter1>
+<hr>
+    局部组件
+    <counter2></counter2>
+
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    //全局
+    Vue.component("counter1",{
+        template: "<button @click='count++'>点我试试{{ count }}我记住你了！</button>",
+        data(){
+            return {count:0}
+        }
+    })
+
+    const counter2 = {
+        template: "<button @click='count++' style='background-color: aqua'>局部组件 点我试试{{ count }}我记住你了！</button>",
+        data() {
+            return {count: 0}
+        }
+    };
+
+
+    const app = new Vue({
+        el:"#root",//elemnet,vue 作用的标签
+        data:{
+        },
+        components :{
+            counter2:counter2 //将定义的对象注册为组件
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vie</title>
+</head>
+<body>
+<div id="app">
+    <!-- 使用子组件的同时，传传递num到子组件当中 -->
+    <h2>num: {{num}}</h2>
+    <counter :count="num" @inc="increment" @dec="decrement"></counter>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    Vue.component("counter", {//子组件，定义了两个按钮。点击数字num会加或减
+        template: '\
+             <div>\
+                  <button @click="plus">加</button>  \
+                    <button @click="reduce">减</button>  \
+             </div> ',
+        props: ['num']//count是从父组件获取的。
+        , methods: {
+            plus() {
+                this.$emit("inc");
+            },
+            reduce() {
+                this.$emit("dec");
+            }
+        }
+    })
+    var app = new Vue({
+        el: "#app",
+        data: {
+            num: 0
+        },
+        methods: { // 父组件中定义操作num的方法
+            increment() {
+                this.num++;
+            },
+            decrement() {
+                this.num--;
+            }
+        }
+    })
+</script>
+</body>
+</html>
